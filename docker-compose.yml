@@ -1,0 +1,22 @@
+version: '3.9'
+services:
+  pgsql:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=terberg
+      - POSTGRES_USER=terberg
+      - POSTGRES_DB=terberg
+    ports:
+      - "5432:5432"
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - pgsql
+    environment:
+      - DB_HOST=pgsql
+    volumes:
+      - './:/var/www'
+    ports:
+      - '80:80'
